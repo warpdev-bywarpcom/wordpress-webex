@@ -37,6 +37,7 @@ before_script:
     fi
 
 script:
+  - echo tests_get_phpunit_version();
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       phpunit
