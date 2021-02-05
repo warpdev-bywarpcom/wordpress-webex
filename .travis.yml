@@ -17,7 +17,7 @@ matrix:
       env: WP_VERSION=latest
 
 before_script:
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - export PATH="$HOME/.config/composer/vendor/bin:$PATH"
   - |
     if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
       phpenv config-rm xdebug.ini
@@ -39,7 +39,7 @@ script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       $HOME/.config/composer/vendor/bin/phpunit
-      WP_MULTISITE=1 $HOME/.composer/vendor/bin/phpunit
+      WP_MULTISITE=1 phpunit
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
