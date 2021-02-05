@@ -13,6 +13,7 @@ matrix:
   include:
     - php: 7.3
       env: WP_VERSION=latest
+      services: mysql
     - php: 8.0
       env: WP_TRAVISCI=phpcs
 
