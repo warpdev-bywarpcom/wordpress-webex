@@ -46,6 +46,6 @@ script:
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      phpcs -i
-      phpcs
+      phpcs --standard=WordPress
+      phpcs --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 5.6-
     fi
