@@ -15,7 +15,7 @@ matrix:
   include:
     - php: 7.4
       env: WP_VERSION=latest
-    - php: 7.4
+    - php: 7.3
       env: WP_TRAVISCI=phpcs
 
 before_script:
@@ -48,6 +48,3 @@ script:
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       phpcs
     fi
-  - pwd
-  - cd $HOME/.config/composer/vendor/bin
-  - ls -l
