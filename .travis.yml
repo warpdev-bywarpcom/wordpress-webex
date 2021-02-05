@@ -37,11 +37,10 @@ before_script:
     fi
 
 script:
-  - echo tests_get_phpunit_version();
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-      WP_MULTISITE=1 phpunit
+      $HOME/.composer/vendor/bin/phpunit
+      WP_MULTISITE=1 $HOME/.composer/vendor/bin/phpunit
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
