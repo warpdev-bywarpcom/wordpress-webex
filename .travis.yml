@@ -13,15 +13,13 @@ cache:
 
 matrix:
   include:
-    - php: 8.0
-      env: WP_VERSION=latest
-    - php: 8.0
-      env: WP_VERSION=trunk
-    - php: 8.0
-      env: WP_VERSION=latest
-      env: WP_TRAVISCI=phpcs
     - php: 7.4
       env: WP_VERSION=latest
+    - php: 7.4
+      env: WP_VERSION=trunk
+    - php: 7.4
+      env: WP_VERSION=latest
+      env: WP_TRAVISCI=phpcs
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
