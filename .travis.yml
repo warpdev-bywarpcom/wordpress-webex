@@ -35,7 +35,6 @@ before_script:
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       composer global require wp-coding-standards/wpcs
       phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
-      phpenv rehash
     fi
 
 script:
@@ -46,5 +45,6 @@ script:
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      phpcs -i
       phpcs
     fi
