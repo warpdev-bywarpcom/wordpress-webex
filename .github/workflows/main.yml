@@ -30,6 +30,8 @@ jobs:
       # Checks-out the repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
       
+      # We start by calling MySQL because the container needs time to boot. 
+      # Using the native service, instead of this docker approach, was giving conection errors.
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
@@ -44,13 +46,14 @@ jobs:
           tools: phpunit:7.5.20
      
       # Intalls the tests - the parameters syntax can be found in the install-wp-tests.sh file. 
+      # loalhost doesn't work, we need 127.0.0.1: https://stackoverflow.com/q/58222386/4470542
       - name: Install WP Tests
         run: bash bin/install-wp-tests.sh $MYSQL_DATABASE root $MYSQL_ROOT_PASSWORD 127.0.0.1 ${{ matrix.wordpress-version }} true
 
-      # MySQL may not be ready. In that case we wait
+      # MySQL may not be ready. In that case we wait 1 second and try again. Same logic for not using the default host (localhost).
       - name: Wait for MySQL
         run: |
-          while ! mysqladmin ping --password=$MYSQL_ROOT_PASSWORD --silent; do
+          while ! mysqladmin ping --host=127.0.0.1 --password=$MYSQL_ROOT_PASSWORD --silent; do
             sleep 1
           done
 
