@@ -76,16 +76,17 @@ jobs:
       # Checks-out the repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
       
-      - name: Setup PHP & phpcs
+      - name: Setup PHP 
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          tools: phpcs
-          
-      - name: Add wpcs and phpcompatibility-wp
+      
+      # Using phpcodesniffer-composer-installer allows for easy installation of PHP_CodeSniffer coding standards
+      - name: Add phpcs and packages
         run: |
          composer global require wp-coding-standards/wpcs
          composer global require phpcompatibility/phpcompatibility-wp
+         composer global require dealerdirect/phpcodesniffer-composer-installer
 
       - name: Run phpcs
         run: --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 5.6- .
