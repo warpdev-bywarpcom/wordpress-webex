@@ -42,7 +42,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          tools: phpunit:7.*
+          tools: phpunit:7.5.20
       
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
