@@ -1,5 +1,5 @@
 # wordpress-webex
-! [CI]&nbsp;(https://github.com/actions/hello-world/workflows/CI/badge.svg)
+![CI](https://github.com/actions/hello-world/workflows/CI/badge.svg)
 
 
 
