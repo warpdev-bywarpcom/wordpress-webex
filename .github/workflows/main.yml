@@ -36,6 +36,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: $MYSQL_VERSION
+          mysql database: $MYSQL_DATABASE
+          mysql root password: $MYSQL_ROOT_PASSWORD
+      
       - run: export PATH="$HOME/.config/composer/vendor/bin:$PATH"
       
       - name: Setup PHP
@@ -43,13 +50,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: phpunit:7.5.20
-      
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql version: $MYSQL_VERSION
-          mysql database: $MYSQL_DATABASE
-          mysql root password: $MYSQL_ROOT_PASSWORD
         
       - name: Install WP Tests
         run: bash bin/install-wp-tests.sh $MYSQL_DATABASE root $MYSQL_ROOT_PASSWORD 127.0.0.1 ${{ matrix.wordpress-version }} true
