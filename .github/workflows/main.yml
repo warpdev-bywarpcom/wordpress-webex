@@ -42,15 +42,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          tools: phpunit:7
           
       - uses: mirromutth/mysql-action@v1.1
         with:
           mysql version: $MYSQL_VERSION
           mysql database: $MYSQL_DATABASE
           mysql root password: $MYSQL_ROOT_PASSWORD
-          
-      - name: Composer install PHPUnit
-        run: composer global require "phpunit/phpunit=7.*"
         
       - name: Install WP Tests
         run: bash bin/install-wp-tests.sh $MYSQL_DATABASE root $MYSQL_ROOT_PASSWORD 127.0.0.1 ${{ matrix.wordpress-version }} true
