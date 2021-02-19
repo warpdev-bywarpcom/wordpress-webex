@@ -45,12 +45,12 @@ jobs:
      
       # Intalls the tests - the parameters syntax can be found in the install-wp-tests.sh file. 
       - name: Install WP Tests
-        run: bash bin/install-wp-tests.sh $MYSQL_DATABASE root $MYSQL_ROOT_PASSWORD ${{ matrix.wordpress-version }} true
+        run: bash bin/install-wp-tests.sh $MYSQL_DATABASE root $MYSQL_ROOT_PASSWORD 127.0.0.1 ${{ matrix.wordpress-version }} true
 
       # MySQL may not be ready. In that case we wait
       - name: Wait for MySQL
         run: |
-          while ! mysqladmin ping --host=127.0.0.1 --password=$MYSQL_ROOT_PASSWORD --silent; do
+          while ! mysqladmin ping --password=$MYSQL_ROOT_PASSWORD --silent; do
             sleep 1
           done
 
