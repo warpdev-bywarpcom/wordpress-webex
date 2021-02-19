@@ -1,4 +1,5 @@
-# A set of files you probably don't want in your WordPress.org distribution
+# A set of files not usual in WordPress.org distribution
+# To use with https://developer.wordpress.org/cli/commands/dist-archive/
 .babelrc
 .deployignore
 .distignore
