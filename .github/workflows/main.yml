@@ -25,17 +25,21 @@ jobs:
         php-version: ['7.3']
         wordpress-version: ['latest']
         
-    env:
-      MYSQL_ROOT_PASSWORD: rootpassword
     # Steps represent a sequence of tasks that will be executed as part of the job
+    
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306/tcp
+          
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
-      # Adds a MySQL service, so the job can access it
-      - uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql root password: $MYSQL_ROOT_PASSWORD
       
       - run: export PATH="$HOME/.config/composer/vendor/bin:$PATH"
       
@@ -48,7 +52,7 @@ jobs:
         run: composer global require "phpunit/phpunit=7.*"
         
       - name: Install WP Tests
-        run: bash bin/install-wp-tests.sh wordpress_test root $MYSQL_ROOT_PASSWORD localhost ${{ matrix.wordpress-version }}
+        run: bash bin/install-wp-tests.sh wordpress_test root password localhost ${{ matrix.wordpress-version }}
 
       - name: phpunit tests
         run: phpunit
