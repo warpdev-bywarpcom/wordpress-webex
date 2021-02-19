@@ -15,7 +15,9 @@ jobs:
   wp-test:
     runs-on: ${{ matrix.operating-system }}
     
-    strategy:      
+    strategy:
+      # Max PHP version is PHP 7.3 (due to phpunit 7). phpunit 7 is the latest supported by WordPress. 
+      # More details on the test strategy in https://github.com/warpdev-bywarpcom/wordpress-webex/discussions/9.
       matrix:
         operating-system: [ubuntu-latest]
         php-version: ['7.3']
@@ -39,7 +41,7 @@ jobs:
           mysql database: $MYSQL_DATABASE
           mysql root password: $MYSQL_ROOT_PASSWORD
       
-      - name: Setup PHP
+      - name: Setup PHP & phpunit
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -61,3 +63,29 @@ jobs:
         run: |
           phpunit
           WP_MULTISITE=1 phpunit
+          
+  php-code-sniffer:
+    runs-on: ubuntu-latest
+        
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+      
+      - name: Setup PHP 
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      
+      # Using phpcodesniffer-composer-installer allows for easy installation of PHP_CodeSniffer coding standards
+      - name: Add phpcs and packages
+        run: |
+         export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+         composer global require wp-coding-standards/wpcs
+         composer global require phpcompatibility/phpcompatibility-wp
+         composer global require dealerdirect/phpcodesniffer-composer-installer
+
+      - name: Run phpcs
+        run: |
+          phpcs --standard=WordPress .
+          # Validate compatibility with older PHP versions
+          phpcs --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 5.6- .
