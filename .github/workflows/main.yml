@@ -42,9 +42,10 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          tools: phpunit:7
-          
-      - uses: mirromutth/mysql-action@v1.1
+          tools: phpunit:7.*
+      
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
         with:
           mysql version: $MYSQL_VERSION
           mysql database: $MYSQL_DATABASE
@@ -53,5 +54,5 @@ jobs:
       - name: Install WP Tests
         run: bash bin/install-wp-tests.sh $MYSQL_DATABASE root $MYSQL_ROOT_PASSWORD 127.0.0.1 ${{ matrix.wordpress-version }} true
 
-      - name: phpunit tests
+      - name: PHPUnit tests
         run: phpunit
