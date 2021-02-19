@@ -66,11 +66,6 @@ jobs:
           
   php-code-sniffer:
     runs-on: ubuntu-latest
-    
-    env:
-      # PHPCS checks PHP compatility without needing to run in all PHPs
-      PHP_VERSION: '8.0'
-      TEST_FROM_PHP_VERSION: 5.6
         
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE
@@ -79,7 +74,7 @@ jobs:
       - name: Setup PHP 
         uses: shivammathur/setup-php@v2
         with:
-          php-version: $PHP_VERSION
+          php-version: 8.0
       
       # Using phpcodesniffer-composer-installer allows for easy installation of PHP_CodeSniffer coding standards
       - name: Add phpcs and packages
@@ -93,4 +88,4 @@ jobs:
         run: |
           phpcs --standard=WordPress .
           # Validate compatibility with older PHP versions
-          phpcs --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion $TEST_FROM_PHP_VERSION- .
+          phpcs --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 5.6- .
