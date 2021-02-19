@@ -65,12 +65,12 @@ jobs:
           WP_MULTISITE=1 phpunit
           
   php-code-sniffer:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
     
-    strategy:      
-      matrix:
-        operating-system: [ubuntu-latest]
-        php-version: ['8.0']
+    env:
+      # PHPCS checks PHP compatility without needing to run in all PHPs
+      PHP-VERSION: '8.0'
+      TEST-FROM-PHP-VERSION: 5.6
         
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE
@@ -79,14 +79,18 @@ jobs:
       - name: Setup PHP 
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: $PHP-VERSION
       
       # Using phpcodesniffer-composer-installer allows for easy installation of PHP_CodeSniffer coding standards
       - name: Add phpcs and packages
         run: |
+         export PATH="$HOME/.config/composer/vendor/bin:$PATH"
          composer global require wp-coding-standards/wpcs
          composer global require phpcompatibility/phpcompatibility-wp
          composer global require dealerdirect/phpcodesniffer-composer-installer
 
       - name: Run phpcs
-        run: --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 5.6- .
+        run: |
+          phpcs --standard=WordPress .
+          # Validate compatibility with older PHP versions
+          phpcs --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion $TEST-FROM-PHP-VERSION- .
