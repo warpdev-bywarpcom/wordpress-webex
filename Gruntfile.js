@@ -1,5 +1,5 @@
 /**
- * GRUNT configuration file. 
+ * GRUNT configuration file.
  *
  * Using GRUNT to automate repetitive tasks. This does two tasks:
  *   - Converts WordPress readme.txt file to markdown (readme.md)
