@@ -46,6 +46,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: phpunit:7.5.20
+          coverage: xdebug
      
       # Intalls the tests - the parameters syntax can be found in the install-wp-tests.sh file. 
       # loalhost doesn't work, we need 127.0.0.1: https://stackoverflow.com/q/58222386/4470542
