@@ -15,7 +15,9 @@ jobs:
   wp-test:
     runs-on: ${{ matrix.operating-system }}
     
-    strategy:      
+    strategy:
+      # Max PHP version is PHP 7.3 (due to phpunit 7). phpunit 7 is the latest supported by WordPress. 
+      # More details on the test strategy in https://github.com/warpdev-bywarpcom/wordpress-webex/discussions/9.
       matrix:
         operating-system: [ubuntu-latest]
         php-version: ['7.3']
@@ -39,7 +41,7 @@ jobs:
           mysql database: $MYSQL_DATABASE
           mysql root password: $MYSQL_ROOT_PASSWORD
       
-      - name: Setup PHP
+      - name: Setup PHP & phpunit
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -61,3 +63,25 @@ jobs:
         run: |
           phpunit
           WP_MULTISITE=1 phpunit
+          
+  php-code-sniffer:
+    runs-on: ${{ matrix.operating-system }}
+    
+    strategy:      
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-version: ['8.0']
+        
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+      
+      - name: Setup PHP & phpcs
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: phpcs
+   
+
+      - name: Run phpcs
+        run: --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 5.6- .
