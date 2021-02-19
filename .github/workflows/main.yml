@@ -64,6 +64,12 @@ jobs:
         run: |
           phpunit
           WP_MULTISITE=1 phpunit
+
+      - name: Coverage report to codacy
+        uses: codacy/codacy-coverage-reporter-action@v0
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+
           
   php-code-sniffer:
     runs-on: ubuntu-latest
