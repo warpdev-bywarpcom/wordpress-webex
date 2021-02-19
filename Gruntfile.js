@@ -1,3 +1,10 @@
+/**
+ * GRUNT configuration file. 
+ *
+ * Using GRUNT to automate repetitive tasks. This does two tasks:
+ *   - Converts WordPress readme.txt file to markdown (readme.md)
+ *   - Generate a POT file for translators to use when translating your plugin or theme.
+ */
 module.exports = function( grunt ) {
 
 	'use strict';
