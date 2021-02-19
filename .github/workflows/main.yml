@@ -1,59 +1,63 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers the workflow on push or pull request events but only for the main branch.
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  # This job runs the test suite set with install-wp-tests.sh and using phpunit
+  wp-test:
     runs-on: ${{ matrix.operating-system }}
+    
     strategy:      
       matrix:
         operating-system: [ubuntu-latest]
         php-version: ['7.3']
         wordpress-version: ['latest']
         
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    
     env:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress_test
       MYSQL_VERSION: 5.7
           
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out the repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
       
-      - run: export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+      # We start by calling MySQL because the container needs time to boot. 
+      # Using the native service, instead of this docker approach, was giving conection errors.
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: $MYSQL_VERSION
+          mysql database: $MYSQL_DATABASE
+          mysql root password: $MYSQL_ROOT_PASSWORD
       
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          
-      - uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql version: $MYSQL_VERSION
-          mysql database: $MYSQL_DATABASE
-          mysql root password: $MYSQL_ROOT_PASSWORD
-          
-      - name: Composer install PHPUnit
-        run: composer global require "phpunit/phpunit=7.*"
-        
+          tools: phpunit:7.5.20
+     
+      # Intalls the tests - the parameters syntax can be found in the install-wp-tests.sh file. 
+      # loalhost doesn't work, we need 127.0.0.1: https://stackoverflow.com/q/58222386/4470542
       - name: Install WP Tests
         run: bash bin/install-wp-tests.sh $MYSQL_DATABASE root $MYSQL_ROOT_PASSWORD 127.0.0.1 ${{ matrix.wordpress-version }} true
 
-      - name: phpunit tests
-        run: phpunit
+      # MySQL may not be ready. In that case we wait 1 second and try again. Same logic for not using the default host (localhost).
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping --host=127.0.0.1 --password=$MYSQL_ROOT_PASSWORD --silent; do
+            sleep 1
+          done
+
+      - name: PHPUnit tests
+        run: |
+          phpunit
+          WP_MULTISITE=1 phpunit
