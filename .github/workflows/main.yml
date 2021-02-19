@@ -81,7 +81,11 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: phpcs
-   
+          
+      - name: Add wpcs and phpcompatibility-wp
+        run: |
+         composer global require wp-coding-standards/wpcs
+         composer global require phpcompatibility/phpcompatibility-wp
 
       - name: Run phpcs
         run: --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 5.6- .
