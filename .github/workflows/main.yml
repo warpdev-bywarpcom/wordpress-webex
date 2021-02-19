@@ -35,8 +35,9 @@ jobs:
           php-version: ${{ matrix.php-version }}
           
       - name: Composer install
-        run: composer install --optimize-autoloader --prefer-dist
-             composer global require "phpunit/phpunit=7.*"
+        run: 
+          composer install --optimize-autoloader --prefer-dist
+          composer global require "phpunit/phpunit=7.*"
         
       - name: Install WP Tests
         run: bash bin/install-wp-tests.sh wordpress_test root root localhost ${{ matrix.wordpress-version }}
