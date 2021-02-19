@@ -63,7 +63,7 @@ jobs:
       - name: PHPUnit tests
         run: |
           phpunit 
-          WP_MULTISITE=1 phpunit --whitelist . --coverage-clover coverage.xml
+          WP_MULTISITE=1 phpunit --whitelist ./wordpress-webex.php --coverage-clover coverage.xml
 
       - name: Coverage report to codacy
         uses: codacy/codacy-coverage-reporter-action@v0
