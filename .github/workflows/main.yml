@@ -63,7 +63,7 @@ jobs:
       - name: PHPUnit tests
         run: |
           phpunit 
-          WP_MULTISITE=1 phpunit --coverage-xml coverage/
+          WP_MULTISITE=1 phpunit --whitelist . --coverage-xml coverage/
 
       - name: Coverage report to codacy
         uses: codacy/codacy-coverage-reporter-action@v0
