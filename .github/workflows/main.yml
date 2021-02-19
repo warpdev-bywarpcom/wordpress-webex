@@ -54,5 +54,12 @@ jobs:
       - name: Install WP Tests
         run: bash bin/install-wp-tests.sh $MYSQL_DATABASE root $MYSQL_ROOT_PASSWORD 127.0.0.1 ${{ matrix.wordpress-version }} true
 
+      - name: Wait for MySQL
+        run: |
+          while ! /usr/bin/mysql --host=127.0.0.1 --user=root --password=$MYSQL_ROOT_PASSWORD --execute \"SHOW DATABASES;\"; do
+            sleep 1
+            echo here!
+          done
+
       - name: PHPUnit tests
         run: phpunit
