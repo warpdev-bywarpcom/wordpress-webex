@@ -63,16 +63,14 @@ jobs:
       - name: PHPUnit tests
         run: |
           phpunit 
-          WP_MULTISITE=1 phpunit --whitelist . --coverage-xml coverage-xml/
-
-      - run: find coverage-xml/ -type f -printf "%f\n"
+          WP_MULTISITE=1 phpunit --whitelist . --coverage-clover coverage.xml
 
       - name: Coverage report to codacy
         uses: codacy/codacy-coverage-reporter-action@v0
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: coverage.xml
 
-          
   php-code-sniffer:
     runs-on: ubuntu-latest
         
