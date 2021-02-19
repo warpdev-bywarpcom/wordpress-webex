@@ -46,6 +46,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: phpunit:7.5.20
+          coverage: xdebug
      
       # Intalls the tests - the parameters syntax can be found in the install-wp-tests.sh file. 
       # loalhost doesn't work, we need 127.0.0.1: https://stackoverflow.com/q/58222386/4470542
@@ -61,9 +62,15 @@ jobs:
 
       - name: PHPUnit tests
         run: |
-          phpunit
-          WP_MULTISITE=1 phpunit
-          
+          phpunit 
+          WP_MULTISITE=1 phpunit --whitelist . --coverage-clover coverage.xml
+
+      - name: Coverage report to codacy
+        uses: codacy/codacy-coverage-reporter-action@v0
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: coverage.xml
+
   php-code-sniffer:
     runs-on: ubuntu-latest
         
