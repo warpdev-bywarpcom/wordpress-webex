@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Define the internationalization functionality
  *
@@ -24,7 +23,7 @@
  * @subpackage Warpi/includes
  * @author     Your Name <email@example.com>
  */
-class Warpi_i18n {
+class Warpi_I18n {
 
 
 	/**

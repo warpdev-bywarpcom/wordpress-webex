@@ -1,3 +1,11 @@
+/**
+ * Warpi public javascript file.
+ *
+ * Public javascript.
+ *
+ * @package Warpi
+ */
+
 (function( $ ) {
 	'use strict';
 

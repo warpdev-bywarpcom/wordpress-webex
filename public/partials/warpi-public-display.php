@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile -- empty file! REMOVE WHEN CODE IS ADDED
 /**
  * Provide a public-facing view for the plugin
  *

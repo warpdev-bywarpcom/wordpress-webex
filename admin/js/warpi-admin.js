@@ -1,3 +1,11 @@
+/**
+ * Warpi admin javascript file.
+ *
+ * Admin javascript.
+ *
+ * @package Warpi
+ */
+
 (function( $ ) {
 	'use strict';
 

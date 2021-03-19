@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -72,7 +71,7 @@ class Warpi {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->Warpi = 'warpi';
+		$this->warpi = 'warpi';
 
 		$this->load_dependencies();
 		$this->set_locale();

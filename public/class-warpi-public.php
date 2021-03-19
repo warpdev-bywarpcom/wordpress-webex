@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -44,12 +43,12 @@ class Warpi_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $warpi       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $warpi       The name of the plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $warpi, $version ) {
 
-		$this->warpi = $warpi;
+		$this->warpi   = $warpi;
 		$this->version = $version;
 
 	}
